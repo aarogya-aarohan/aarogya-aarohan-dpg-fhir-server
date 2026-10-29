@@ -1,0 +1,135 @@
+{
+  "realm": "test",
+  "enabled": true,
+  "sslRequired": "none",
+  "requiredActions": [
+    {
+      "alias": "VERIFY_PROFILE",
+      "name": "Verify Profile",
+      "providerId": "VERIFY_PROFILE",
+      "enabled": false,
+      "defaultAction": false,
+      "priority": 90,
+      "config": {}
+    }
+  ],
+  "roles": {
+    "realm": [
+      {"name": "FHIR_READ_ALL_OF_TYPE"},
+      {"name": "FHIR_WRITE_ALL_OF_TYPE"},
+      {"name": "FHIR_EXTENDED_OPERATION_SUPERUSER"},
+      {"name": "FHIR_ALL_READ"},
+      {"name": "FHIR_ALL_WRITE"}
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "fhir-client",
+      "enabled": true,
+      "publicClient": true,
+      "directAccessGrantsEnabled": true,
+      "protocolMappers": [
+        {
+          "name": "partition-id-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "partition_id",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "claim.name": "partition_id",
+            "jsonType.label": "String",
+            "introspection.token.claim": "true"
+          }
+        },
+        {
+          "name": "permission-argument-mapper",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-attribute-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "permission_argument",
+            "id.token.claim": "true",
+            "access.token.claim": "true",
+            "userinfo.token.claim": "true",
+            "introspection.token.claim": "true",
+            "claim.name": "permission_argument",
+            "jsonType.label": "String",
+            "multivalued": "true",
+            "aggregate.attrs": "false"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "user-a",
+      "email": "user-a@test.local",
+      "firstName": "User",
+      "lastName": "A",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [],
+      "attributes": {
+        "partition_id": ["TENANT-A"],
+        "permission_argument": [
+          "FHIR_READ_ALL_OF_TYPE/Patient",
+          "FHIR_READ_ALL_OF_TYPE/Composition",
+          "FHIR_READ_ALL_OF_TYPE/Questionnaire",
+          "FHIR_READ_ALL_OF_TYPE/StructureMap",
+          "FHIR_READ_ALL_OF_TYPE/Library",
+          "FHIR_WRITE_ALL_OF_TYPE/Patient",
+          "FHIR_WRITE_ALL_OF_TYPE/Composition"
+        ]
+      },
+      "realmRoles": [
+        "FHIR_READ_ALL_OF_TYPE",
+        "FHIR_WRITE_ALL_OF_TYPE"
+      ],
+      "credentials": [{"type": "password", "value": "password", "temporary": false}]
+    },
+    {
+      "username": "user-b",
+      "email": "user-b@test.local",
+      "firstName": "User",
+      "lastName": "B",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [],
+      "attributes": {
+        "partition_id": ["TENANT-B"],
+        "permission_argument": [
+          "FHIR_READ_ALL_OF_TYPE/Patient",
+          "FHIR_READ_ALL_OF_TYPE/Composition",
+          "FHIR_READ_ALL_OF_TYPE/Questionnaire",
+          "FHIR_READ_ALL_OF_TYPE/StructureMap",
+          "FHIR_READ_ALL_OF_TYPE/Library",
+          "FHIR_WRITE_ALL_OF_TYPE/Patient",
+          "FHIR_WRITE_ALL_OF_TYPE/Composition"
+        ]
+      },
+      "realmRoles": [
+        "FHIR_READ_ALL_OF_TYPE",
+        "FHIR_WRITE_ALL_OF_TYPE"
+      ],
+      "credentials": [{"type": "password", "value": "password", "temporary": false}]
+    },
+    {
+      "username": "admin",
+      "email": "admin@test.local",
+      "firstName": "Admin",
+      "lastName": "User",
+      "enabled": true,
+      "emailVerified": true,
+      "requiredActions": [],
+      "realmRoles": [
+        "FHIR_ALL_READ",
+        "FHIR_ALL_WRITE",
+        "FHIR_EXTENDED_OPERATION_SUPERUSER"
+      ],
+      "credentials": [{"type": "password", "value": "password", "temporary": false}]
+    }
+  ]
+}
